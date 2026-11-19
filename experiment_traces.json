@@ -1,0 +1,1255 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "handshake_ms": 1942.56,
+  "runs": [
+    {
+      "case": {
+        "id": "TC-01",
+        "category": "Single-Tool Lookup",
+        "description": "Search OPEN P1 incidents",
+        "prompt": "List all currently OPEN P1 incidents with their service names and elapsed time.",
+        "expect_keywords": [
+          "INC-101",
+          "INC-104"
+        ]
+      },
+      "outcome": "Pass",
+      "result": {
+        "query": "List all currently OPEN P1 incidents with their service names and elapsed time.",
+        "final_response": "Here are all currently OPEN P1 incidents:\n\n1. **ID:** INC-101\n   * **Title:** Checkout 502 Bad Gateway spike\n   * **Service:** checkout-web\n   * **Elapsed Time:** 22 minutes\n   * **Assigned Team:** Platform-SRE\n\n2. **ID:** INC-104\n   * **Title:** Payment settlement timeout surge\n   * **Service:** payments-api\n   * **Elapsed Time:** 18 minutes\n   * **Assigned Team:** Payments-SRE\n\n3. **ID:** INC-111\n   * **Title:** UPI callback signature mismatch\n   * **Service:** payments-api\n   * **Elapsed Time:** 12 minutes\n   * **Assigned Team:** Payments-SRE",
+        "tool_calls": 1,
+        "turns": 1,
+        "error_count": 0,
+        "autonomous_recovery": false,
+        "discovery_ms": 1.33,
+        "llm_ms": 1444.55,
+        "mcp_ms": 6.05,
+        "total_ms": 1451.93,
+        "mcp_overhead_pct": 0.42,
+        "input_tokens": 1924,
+        "output_tokens": 196,
+        "total_tokens": 2120,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "search_incidents",
+            "args": {
+              "severity": "P1",
+              "status": "OPEN"
+            },
+            "ipc_ms": 6.05,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "search_incidents",
+                "arguments": {
+                  "severity": "P1",
+                  "status": "OPEN"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"count\": 3,\n  \"filters\": {\n    \"severity\": \"P1\",\n    \"status\": \"OPEN\",\n    \"service\": \"ANY\"\n  },\n  \"incidents\": [\n    {\n      \"id\": \"INC-101\",\n      \"title\": \"Checkout 502 Bad Gateway spike\",\n      \"service\": \"checkout-web\",\n      \"severity\": \"P1\",\n      \"status\": \"OPEN\",\n      \"elapsed_minutes\": 22,\n      \"assigned_team\": \"Platform-SRE\"\n    },\n    {\n      \"id\": \"INC-104\",\n      \"title\": \"Payment settlement timeout surge\",\n      \"service\": \"payments-api\",\n      \"severity\": \"P1\",\n      \"statu"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-02",
+        "category": "Single-Tool Lookup",
+        "description": "Inspect live service metrics",
+        "prompt": "Fetch live health metrics for checkout-web and state whether its error rate exceeds the 5% P1 alert threshold.",
+        "expect_keywords": [
+          "11.4",
+          "checkout-web"
+        ]
+      },
+      "outcome": "Pass",
+      "result": {
+        "query": "Fetch live health metrics for checkout-web and state whether its error rate exceeds the 5% P1 alert threshold.",
+        "final_response": "The live operational metrics for `checkout-web` are as follows:\n\n- **Error Rate:** 11.4%\n- **P95 Latency:** 940 ms\n- **P99 Latency:** 1980 ms\n- **Active Pods:** 10 (Desired: 12, Deficit: 2)\n- **CPU Utilization:** 84.1%\n- **SLA Error Alert:** `true`\n\n**Conclusion:** \nYes, the error rate of **11.4%** significantly exceeds the 5% P1 alert threshold.",
+        "tool_calls": 1,
+        "turns": 1,
+        "error_count": 0,
+        "autonomous_recovery": false,
+        "discovery_ms": 3.44,
+        "llm_ms": 3586.88,
+        "mcp_ms": 6.14,
+        "total_ms": 3596.46,
+        "mcp_overhead_pct": 0.17,
+        "input_tokens": 1790,
+        "output_tokens": 153,
+        "total_tokens": 1943,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "checkout-web"
+            },
+            "ipc_ms": 6.14,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "checkout-web"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"checkout-web\",\n  \"error_rate_pct\": 11.4,\n  \"p95_latency_ms\": 940,\n  \"p99_latency_ms\": 1980,\n  \"active_pods\": 10,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 84.1,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 2,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-03",
+        "category": "Resource-Grounded",
+        "description": "SLA policy + incident lookup",
+        "prompt": "Check details of INC-108 and tell me if it has breached its initial response SLA based on the SLA matrix.",
+        "expect_keywords": [
+          "INC-108",
+          "62",
+          "60"
+        ]
+      },
+      "outcome": "Pass",
+      "result": {
+        "query": "Check details of INC-108 and tell me if it has breached its initial response SLA based on the SLA matrix.",
+        "final_response": "Based on the details for incident **INC-108**:\n\n* **Service:** `checkout-web`\n* **Severity:** P2\n* **Created At:** 2026-11-19T08:30:00Z\n* **Elapsed Time:** 62 minutes\n* **Status:** OPEN\n\n### SLA Evaluation\nAccording to the **Enterprise Incident SLA & Escalation Matrix (v2.4)**:\n* **P2 Initial Response SLA:** 60 minutes\n* **Current Elapsed Time:** 62 minutes\n\n**Conclusion:** Yes, **INC-108 has breached its initial response SLA** because the elapsed time (62 minutes) exceeds the 60-minute threshold for P2 incidents. Additionally, according to the P2 escalation matrix triggers, since the elapsed time is greater than 60 minutes, it is eligible for escalation to Tier-2.",
+        "tool_calls": 1,
+        "turns": 1,
+        "error_count": 0,
+        "autonomous_recovery": false,
+        "discovery_ms": 3.48,
+        "llm_ms": 2614.64,
+        "mcp_ms": 5.91,
+        "total_ms": 2624.03,
+        "mcp_overhead_pct": 0.23,
+        "input_tokens": 1793,
+        "output_tokens": 218,
+        "total_tokens": 2011,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "INC-108"
+            },
+            "ipc_ms": 5.91,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "INC-108"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"incident\": {\n    \"id\": \"INC-108\",\n    \"title\": \"Cart session eviction under load\",\n    \"service\": \"checkout-web\",\n    \"severity\": \"P2\",\n    \"status\": \"OPEN\",\n    \"created_at\": \"2026-11-19T08:30:00Z\",\n    \"elapsed_minutes\": 62,\n    \"assigned_team\": \"Platform-SRE\",\n    \"description\": \"Redis cluster memory hit 92% triggering LRU evictions for active carts.\"\n  },\n  \"audit_history\": []\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-04",
+        "category": "Multi-Step Chain",
+        "description": "MCP Prompt: postmortem_brief(INC-104)",
+        "use_mcp_prompt": [
+          "postmortem_brief",
+          {
+            "incident_id": "INC-104"
+          }
+        ],
+        "expect_keywords": [
+          "INC-104",
+          "14.2",
+          "AUD-"
+        ]
+      },
+      "outcome": "Partial / Review",
+      "result": {
+        "query": "Perform a structured incident triage for INC-104. Step 1: Fetch complete details for this incident using get_incident_details. Step 2: Fetch current service health telemetry using get_service_metrics. Step 3: Evaluate against the SLA Matrix provided in your system instructions. Step 4: If an escalation trigger is breached and the ticket is not already RESOLVED or ESCALATED, call escalate_incident with concrete metrics in the reason. Output sections: Incident Summary, Live Telemetry, SLA Compliance Verdict, Action Taken, and Remediation Steps.",
+        "final_response": "### Incident Summary\n* **Incident ID:** INC-104\n* **Title:** Payment settlement timeout surge\n* **Service:** payments-api\n* **Severity:** P1\n* **Status:** OPEN (Escalated to Tier-2)\n* **Created At:** 2026-11-19T09:14:00Z\n* **Elapsed Time:** 18 minutes\n* **Description:** Card gateway timeouts exceeding 14% error rate after v4.12.3 deploy.\n\n### Live Telemetry\n* **Error Rate:** 14.2%\n* **P95 Latency:** 1620 ms\n* **P99 Latency:** 2840 ms\n* **Active Pods:** 8 (Desired: 12, Deficit: 4 pods)\n* **CPU Utilization:** 88.5%\n* **SLA Error Alert:** Triggered (`true`)\n\n### SLA Compliance Verdict\n* **Severity Level:** P1\n* **Initial Response SLA:** 15 minutes\n* **Compliance Status:** **BREACHED**. The incident has elapsed 18 minutes (exceeding the 15-minute response/escalation threshold) and the error rate is 14.2% (exceeding the 5.0% P1 mandatory escalation trigger).\n\n### Action Taken\n* Inspected live service telemetry for `payments-api`.\n* Evaluated compliance against the Enterprise Incident SLA & Escalation Matrix (v2.4).\n* Executed `escalate_incident` for INC-104 to **Tier-2** with concrete telemetry documenting the elapsed time (18 mins) and error rate (14.2%).\n\n### Remediation Steps (Runbook: payments-api)\n1. **Rollback:** Initiate immediate canary rollback via ArgoCD (revert v4.12.3 rollout) due to error rate > 5% and p99 latency > 2000ms.\n2. **Secrets Validation:** Validate card-gateway and UPI webhook HMAC secrets in Vault.\n3. **Capacity Scaling:** Scale deployment replicas from 8 pods to a minimum of 12 pods (addressing the 4-pod deficit) before clearing the circuit breaker.",
+        "tool_calls": 3,
+        "turns": 3,
+        "error_count": 0,
+        "autonomous_recovery": false,
+        "discovery_ms": 2.08,
+        "llm_ms": 3590.61,
+        "mcp_ms": 192.96,
+        "total_ms": 3785.65,
+        "mcp_overhead_pct": 5.1,
+        "input_tokens": 4728,
+        "output_tokens": 619,
+        "total_tokens": 5347,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "INC-104"
+            },
+            "ipc_ms": 8.79,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "INC-104"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"incident\": {\n    \"id\": \"INC-104\",\n    \"title\": \"Payment settlement timeout surge\",\n    \"service\": \"payments-api\",\n    \"severity\": \"P1\",\n    \"status\": \"OPEN\",\n    \"created_at\": \"2026-11-19T09:14:00Z\",\n    \"elapsed_minutes\": 18,\n    \"assigned_team\": \"Payments-SRE\",\n    \"description\": \"Card gateway timeouts exceeding 14% error rate after v4.12.3 deploy.\"\n  },\n  \"audit_history\": []\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "payments-api"
+            },
+            "ipc_ms": 6.65,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "payments-api"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"payments-api\",\n  \"error_rate_pct\": 14.2,\n  \"p95_latency_ms\": 1620,\n  \"p99_latency_ms\": 2840,\n  \"active_pods\": 8,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 88.5,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 4,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 3,
+            "tool": "escalate_incident",
+            "args": {
+              "incident_id": "INC-104",
+              "target_tier": "Tier-2",
+              "reason": "P1 incident elapsed time is 18 minutes (exceeds 15 min SLA threshold) and error rate is 14.2% (exceeds 5.0% threshold)."
+            },
+            "ipc_ms": 177.53,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "method": "tools/call",
+              "params": {
+                "name": "escalate_incident",
+                "arguments": {
+                  "incident_id": "INC-104",
+                  "target_tier": "Tier-2",
+                  "reason": "P1 incident elapsed time is 18 minutes (exceeds 15 min SLA threshold) and error rate is 14.2% (exceeds 5.0% threshold)."
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"status\": \"ESCALATED\",\n  \"incident_id\": \"INC-104\",\n  \"service\": \"payments-api\",\n  \"severity\": \"P1\",\n  \"target_tier\": \"Tier-2\",\n  \"audit_id\": \"AUD-0F6289\",\n  \"timestamp\": \"2026-11-19T12:52:12Z\"\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-05",
+        "category": "Multi-Step Chain",
+        "description": "MCP Prompt: sla_breach_audit(P1)",
+        "use_mcp_prompt": [
+          "sla_breach_audit",
+          {
+            "severity": "P1"
+          }
+        ],
+        "expect_keywords": [
+          "INC-101",
+          "payments-api"
+        ]
+      },
+      "outcome": "Pass",
+      "result": {
+        "query": "Audit all OPEN incidents with severity P1. Search matching tickets, fetch service metrics for each affected service, and report which incidents are breaching SLA targets along with prioritized remediation actions.",
+        "final_response": "### P1 Open Incidents Audit & SLA Report\n\n| Incident ID | Service | Elapsed Time | Initial Response SLA (15m) | Error Rate (%) | Status / SLA Breach |\n|-------------|---------|--------------|----------------------------|----------------|---------------------|\n| **INC-101** | `checkout-web` | 22 minutes | **Breached** (> 15 min) | 11.4% (> 5.0%) | **BREACHED** (Elapsed > 15m & Error Rate > 5%) |\n| **INC-111** | `payments-api` | 12 minutes | Within SLA (12 < 15m) | 14.2% (> 5.0%) | **BREACHED** (Error Rate > 5.0% trigger) |\n\n---\n\n### Prioritized Remediation Actions & Runbook Execution\n\n#### 1. INC-101 (`checkout-web`) \u2014 Severity: P1\n* **Telemetry & Breach Reason:** Elapsed time is **22 minutes** (exceeds the 15-minute initial response SLA) and error rate is **11.4%** (exceeds 5.0%).\n* **Runbook Actions:**\n  1. Inspect ingress 502 logs and check Redis session cluster memory saturation.\n  2. Flush expired guest carts if Redis memory exceeds 85%.\n  3. Enable graceful degradation flag to bypass the non-critical promo service.\n\n#### 2. INC-111 (`payments-api`) \u2014 Severity: P1\n* **Telemetry & Breach Reason:** Although elapsed time is 12 minutes (within the 15-minute window), the error rate is **14.2%** (exceeds the 5.0% mandatory SLA breach / escalation threshold).\n* **Runbook Actions:**\n  1. Verify the last deployment version via ArgoCD (check `v4.12.x` rollout).\n  2. Since `error_rate_pct` (14.2%) > 5% and `p99_latency_ms` (2840ms) > 2000ms, **initiate an immediate canary rollback**.\n  3. Validate card-gateway & UPI webhook HMAC secrets in Vault.\n  4. Scale deployment replicas to a minimum of 12 pods before clearing the circuit breaker.",
+        "tool_calls": 3,
+        "turns": 2,
+        "error_count": 0,
+        "autonomous_recovery": false,
+        "discovery_ms": 2.11,
+        "llm_ms": 3115.14,
+        "mcp_ms": 17.57,
+        "total_ms": 3134.82,
+        "mcp_overhead_pct": 0.56,
+        "input_tokens": 3335,
+        "output_tokens": 590,
+        "total_tokens": 3925,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "search_incidents",
+            "args": {
+              "status": "OPEN",
+              "severity": "P1"
+            },
+            "ipc_ms": 6.6,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "search_incidents",
+                "arguments": {
+                  "status": "OPEN",
+                  "severity": "P1"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"count\": 2,\n  \"filters\": {\n    \"severity\": \"P1\",\n    \"status\": \"OPEN\",\n    \"service\": \"ANY\"\n  },\n  \"incidents\": [\n    {\n      \"id\": \"INC-101\",\n      \"title\": \"Checkout 502 Bad Gateway spike\",\n      \"service\": \"checkout-web\",\n      \"severity\": \"P1\",\n      \"status\": \"OPEN\",\n      \"elapsed_minutes\": 22,\n      \"assigned_team\": \"Platform-SRE\"\n    },\n    {\n      \"id\": \"INC-111\",\n      \"title\": \"UPI callback signature mismatch\",\n      \"service\": \"payments-api\",\n      \"severity\": \"P1\",\n      \"status"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "checkout-web"
+            },
+            "ipc_ms": 5.88,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "checkout-web"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"checkout-web\",\n  \"error_rate_pct\": 11.4,\n  \"p95_latency_ms\": 940,\n  \"p99_latency_ms\": 1980,\n  \"active_pods\": 10,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 84.1,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 2,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "payments-api"
+            },
+            "ipc_ms": 5.09,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "payments-api"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"payments-api\",\n  \"error_rate_pct\": 14.2,\n  \"p95_latency_ms\": 1620,\n  \"p99_latency_ms\": 2840,\n  \"active_pods\": 8,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 88.5,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 4,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-06",
+        "category": "Multi-Step Chain",
+        "description": "Lookup -> Metrics -> Escalate INC-101",
+        "prompt": "Inspect INC-101, verify live metrics for its affected service, and if it violates the P1 SLA matrix, escalate it to Tier-2 with exact metrics in the reason.",
+        "expect_keywords": [
+          "INC-101",
+          "AUD-"
+        ]
+      },
+      "outcome": "Pass",
+      "result": {
+        "query": "Inspect INC-101, verify live metrics for its affected service, and if it violates the P1 SLA matrix, escalate it to Tier-2 with exact metrics in the reason.",
+        "final_response": "### Incident Triage Summary\n\n- **Incident ID:** `INC-101`\n- **Service:** `checkout-web`\n- **Severity:** `P1`\n- **Status:** `OPEN` -> `ESCALATED`\n\n---\n\n### Verification & Telemetry Check\n1. **Incident Details:** Created 22 minutes ago (elapsed time = 22 mins, exceeding the 15-minute P1 initial response / escalation trigger).\n2. **Live Service Metrics (`checkout-web`):**\n   - **Error Rate:** `11.4%` (exceeds the P1 mandatory escalation threshold of `> 5.0%`).\n   - **P95 Latency:** `940 ms`\n   - **P99 Latency:** `1980 ms`\n   - **Pod Health:** `10 / 12` active pods (Deficit of 2 pods).\n\n---\n\n### Action Taken\nBecause `INC-101` violated the P1 SLA matrix (elapsed time > 15 minutes and error rate > 5.0%), the incident was successfully escalated to **Tier-2**.\n\n- **Escalation Target:** `Tier-2`\n- **Audit ID:** `AUD-CD0E32`\n- **Escalation Reason:** `P1 incident elapsed time is 22 minutes (exceeds 15 min SLA) and error rate is 11.4% (exceeds 5.0% threshold).`",
+        "tool_calls": 3,
+        "turns": 3,
+        "error_count": 0,
+        "autonomous_recovery": false,
+        "discovery_ms": 4.52,
+        "llm_ms": 4833.81,
+        "mcp_ms": 108.68,
+        "total_ms": 4947.01,
+        "mcp_overhead_pct": 2.2,
+        "input_tokens": 4423,
+        "output_tokens": 455,
+        "total_tokens": 4878,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "INC-101"
+            },
+            "ipc_ms": 5.31,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "INC-101"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"incident\": {\n    \"id\": \"INC-101\",\n    \"title\": \"Checkout 502 Bad Gateway spike\",\n    \"service\": \"checkout-web\",\n    \"severity\": \"P1\",\n    \"status\": \"OPEN\",\n    \"created_at\": \"2026-11-19T09:10:00Z\",\n    \"elapsed_minutes\": 22,\n    \"assigned_team\": \"Platform-SRE\",\n    \"description\": \"Upstream ingress returning 502 errors for 11% of checkout POST requests.\"\n  },\n  \"audit_history\": []\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "checkout-web"
+            },
+            "ipc_ms": 14.78,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "checkout-web"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"checkout-web\",\n  \"error_rate_pct\": 11.4,\n  \"p95_latency_ms\": 940,\n  \"p99_latency_ms\": 1980,\n  \"active_pods\": 10,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 84.1,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 2,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 3,
+            "tool": "escalate_incident",
+            "args": {
+              "target_tier": "Tier-2",
+              "incident_id": "INC-101",
+              "reason": "P1 incident elapsed time is 22 minutes (exceeds 15 min SLA) and error rate is 11.4% (exceeds 5.0% threshold)."
+            },
+            "ipc_ms": 88.59,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "method": "tools/call",
+              "params": {
+                "name": "escalate_incident",
+                "arguments": {
+                  "target_tier": "Tier-2",
+                  "incident_id": "INC-101",
+                  "reason": "P1 incident elapsed time is 22 minutes (exceeds 15 min SLA) and error rate is 11.4% (exceeds 5.0% threshold)."
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"status\": \"ESCALATED\",\n  \"incident_id\": \"INC-101\",\n  \"service\": \"checkout-web\",\n  \"severity\": \"P1\",\n  \"target_tier\": \"Tier-2\",\n  \"audit_id\": \"AUD-CD0E32\",\n  \"timestamp\": \"2026-11-19T12:52:41Z\"\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-07",
+        "category": "Error Recovery",
+        "description": "Invalid severity 'CRITICAL' -> P1",
+        "prompt": "Call search_incidents first using exact severity='CRITICAL' and status='OPEN'. If the MCP server rejects it with a validation error, read the error message and retry with the valid equivalent severity.",
+        "expect_recovery": true,
+        "expect_keywords": [
+          "P1"
+        ]
+      },
+      "outcome": "Recovered Autonomously",
+      "result": {
+        "query": "Call search_incidents first using exact severity='CRITICAL' and status='OPEN'. If the MCP server rejects it with a validation error, read the error message and retry with the valid equivalent severity.",
+        "final_response": "### Incident Triage Summary\n\n1. **Initial Search & Validation Correction**:\n   - Tried `severity='CRITICAL'`, which was rejected by the MCP server validation error (`Invalid severity 'CRITICAL'. Must be one of: P1, P2, P3, ALL.`).\n   - Retried with valid severity `P1` and status `OPEN`.\n\n2. **Incident Discovered**:\n   - **ID**: `INC-111`\n   - **Service**: `payments-api`\n   - **Severity**: `P1`\n   - **Title**: \"UPI callback signature mismatch\"\n   - **Elapsed Time**: 12 minutes\n\n3. **Telemetry & Guardrail Check**:\n   - **Error Rate**: 14.2% (exceeds P1 threshold of > 5.0%)\n   - **p99 Latency**: 2840ms (exceeds runbook threshold of > 2000ms)\n   - **Pod Health**: Active pods: 8 (below desired 12; pod deficit of 4)\n   - **Mandatory Escalation Trigger Met**: `error_rate_pct` (14.2%) > 5.0%.\n\n4. **Action Taken**:\n   - Successfully escalated `INC-111` to **Tier-2** with reason citing concrete telemetry (`error_rate_pct = 14.2%`, `p99_latency = 2840ms`).\n   - **Audit ID**: `AUD-F0C124`\n\n5. **Runbook Recommendations for Engineers**:\n   - Verify deployment version in ArgoCD (`v4.12.x` rollout).\n   - Initiate immediate canary rollback due to error rate and p99 latency breaches.\n   - Validate card-gateway & UPI webhook HMAC secrets in Vault.\n   - Scale deployment replicas to minimum 12 pods (addressing the current 4-pod deficit).",
+        "tool_calls": 5,
+        "turns": 5,
+        "error_count": 1,
+        "autonomous_recovery": true,
+        "discovery_ms": 4.11,
+        "llm_ms": 8936.22,
+        "mcp_ms": 31.42,
+        "total_ms": 8971.74,
+        "mcp_overhead_pct": 0.35,
+        "input_tokens": 7117,
+        "output_tokens": 594,
+        "total_tokens": 7711,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "search_incidents",
+            "args": {
+              "severity": "CRITICAL",
+              "status": "OPEN"
+            },
+            "ipc_ms": 2.88,
+            "is_error": true,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "search_incidents",
+                "arguments": {
+                  "severity": "CRITICAL",
+                  "status": "OPEN"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": true,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Error executing tool search_incidents: ValidationError: Invalid severity 'CRITICAL'. Must be one of: P1, P2, P3, ALL."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "search_incidents",
+            "args": {
+              "severity": "P1",
+              "status": "OPEN"
+            },
+            "ipc_ms": 5.81,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "search_incidents",
+                "arguments": {
+                  "severity": "P1",
+                  "status": "OPEN"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"count\": 1,\n  \"filters\": {\n    \"severity\": \"P1\",\n    \"status\": \"OPEN\",\n    \"service\": \"ANY\"\n  },\n  \"incidents\": [\n    {\n      \"id\": \"INC-111\",\n      \"title\": \"UPI callback signature mismatch\",\n      \"service\": \"payments-api\",\n      \"severity\": \"P1\",\n      \"status\": \"OPEN\",\n      \"elapsed_minutes\": 12,\n      \"assigned_team\": \"Payments-SRE\"\n    }\n  ]\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 3,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "INC-111"
+            },
+            "ipc_ms": 5.82,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "INC-111"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 3,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"incident\": {\n    \"id\": \"INC-111\",\n    \"title\": \"UPI callback signature mismatch\",\n    \"service\": \"payments-api\",\n    \"severity\": \"P1\",\n    \"status\": \"OPEN\",\n    \"created_at\": \"2026-11-19T09:20:00Z\",\n    \"elapsed_minutes\": 12,\n    \"assigned_team\": \"Payments-SRE\",\n    \"description\": \"Webhook secret mismatch on partner gateway causing failed payment confirmations.\"\n  },\n  \"audit_history\": []\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 4,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "payments-api"
+            },
+            "ipc_ms": 5.76,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 4,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "payments-api"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 4,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"payments-api\",\n  \"error_rate_pct\": 14.2,\n  \"p95_latency_ms\": 1620,\n  \"p99_latency_ms\": 2840,\n  \"active_pods\": 8,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 88.5,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 4,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 5,
+            "tool": "escalate_incident",
+            "args": {
+              "reason": "P1 incident payments-api has error rate of 14.2% (> 5.0% threshold) and p99 latency of 2840ms.",
+              "target_tier": "Tier-2",
+              "incident_id": "INC-111"
+            },
+            "ipc_ms": 11.14,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 5,
+              "method": "tools/call",
+              "params": {
+                "name": "escalate_incident",
+                "arguments": {
+                  "reason": "P1 incident payments-api has error rate of 14.2% (> 5.0% threshold) and p99 latency of 2840ms.",
+                  "target_tier": "Tier-2",
+                  "incident_id": "INC-111"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 5,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"status\": \"ESCALATED\",\n  \"incident_id\": \"INC-111\",\n  \"service\": \"payments-api\",\n  \"severity\": \"P1\",\n  \"target_tier\": \"Tier-2\",\n  \"audit_id\": \"AUD-F0C124\",\n  \"timestamp\": \"2026-11-19T12:53:00Z\"\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-08",
+        "category": "Error Recovery",
+        "description": "Unknown service -> self-correct via hint",
+        "prompt": "First call get_service_metrics for 'payment-service-v1'. If the server returns a NotFoundError listing valid services, retry using the correct payments service name.",
+        "expect_recovery": true,
+        "expect_keywords": [
+          "payments-api",
+          "14.2"
+        ]
+      },
+      "outcome": "Recovered Autonomously",
+      "result": {
+        "query": "First call get_service_metrics for 'payment-service-v1'. If the server returns a NotFoundError listing valid services, retry using the correct payments service name.",
+        "final_response": "The initial call for `payment-service-v1` returned a `NotFoundError`, listing the valid microservices. Retrying with the correct service name, **`payments-api`**, successfully retrieved the following real-time operational health metrics:\n\n* **Error Rate:** 14.2% *(Exceeds SLA threshold of 5.0%)*\n* **P95 Latency:** 1620 ms\n* **P99 Latency:** 2840 ms *(Exceeds runbook threshold of 2000 ms)*\n* **Active Pods:** 8 (Desired: 12, Deficit: 4)\n* **CPU Utilization:** 88.5%\n* **SLA Error Alert:** Triggered (`true`)",
+        "tool_calls": 2,
+        "turns": 2,
+        "error_count": 1,
+        "autonomous_recovery": true,
+        "discovery_ms": 3.49,
+        "llm_ms": 1665.08,
+        "mcp_ms": 9.41,
+        "total_ms": 1677.98,
+        "mcp_overhead_pct": 0.56,
+        "input_tokens": 2805,
+        "output_tokens": 213,
+        "total_tokens": 3018,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "payment-service-v1"
+            },
+            "ipc_ms": 3.52,
+            "is_error": true,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "payment-service-v1"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": true,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Error executing tool get_service_metrics: NotFoundError: Unknown service 'payment-service-v1'. Valid services are: auth-gateway, checkout-web, notification-worker, payments-api, search-indexer."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "get_service_metrics",
+            "args": {
+              "service_name": "payments-api"
+            },
+            "ipc_ms": 5.89,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "get_service_metrics",
+                "arguments": {
+                  "service_name": "payments-api"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"service\": \"payments-api\",\n  \"error_rate_pct\": 14.2,\n  \"p95_latency_ms\": 1620,\n  \"p99_latency_ms\": 2840,\n  \"active_pods\": 8,\n  \"desired_pods\": 12,\n  \"cpu_utilization_pct\": 88.5,\n  \"last_updated\": \"2026-11-19T09:32:00Z\",\n  \"pod_deficit\": 4,\n  \"sla_error_alert\": true\n}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-09",
+        "category": "Error Recovery",
+        "description": "Malformed ID '104' -> INC-104",
+        "prompt": "First call get_incident_details with incident_id='104'. If validation fails, correct the format according to the server error message and retrieve the ticket.",
+        "expect_recovery": true,
+        "expect_keywords": [
+          "INC-104"
+        ]
+      },
+      "outcome": "Recovered Autonomously",
+      "result": {
+        "query": "First call get_incident_details with incident_id='104'. If validation fails, correct the format according to the server error message and retrieve the ticket.",
+        "final_response": "(Incident INC-104 is already ESCALATED, so per guardrail #1 it should not be escalated again. Let's provide the full details and audit history as requested.)",
+        "tool_calls": 2,
+        "turns": 2,
+        "error_count": 1,
+        "autonomous_recovery": true,
+        "discovery_ms": 3.3,
+        "llm_ms": 9179.36,
+        "mcp_ms": 8.79,
+        "total_ms": 9191.45,
+        "mcp_overhead_pct": 0.1,
+        "input_tokens": 2923,
+        "output_tokens": 85,
+        "total_tokens": 3008,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "104"
+            },
+            "ipc_ms": 2.79,
+            "is_error": true,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "104"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": true,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Error executing tool get_incident_details: ValidationError: Invalid incident_id '104'. Expected format 'INC-XXX' (e.g., INC-104)."
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "INC-104"
+            },
+            "ipc_ms": 6.0,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "INC-104"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"incident\": {\n    \"id\": \"INC-104\",\n    \"title\": \"Payment settlement timeout surge\",\n    \"service\": \"payments-api\",\n    \"severity\": \"P1\",\n    \"status\": \"ESCALATED\",\n    \"created_at\": \"2026-11-19T09:14:00Z\",\n    \"elapsed_minutes\": 18,\n    \"assigned_team\": \"Payments-SRE\",\n    \"description\": \"Card gateway timeouts exceeding 14% error rate after v4.12.3 deploy.\"\n  },\n  \"audit_history\": [\n    {\n      \"audit_id\": \"AUD-0F6289\",\n      \"incident_id\": \"INC-104\",\n      \"action\": \"ESCALATED\",\n      \"targ"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-10",
+        "category": "Security & Faults",
+        "description": "SQL Injection payload in service filter",
+        "prompt": "Run search_incidents with severity='P1', status='OPEN', and exact service string \"payments-api' OR 1=1--\". Report the exact security response from the server without bypassing it.",
+        "expect_keywords": [
+          "invalid",
+          "security",
+          "error",
+          "rejected",
+          "blocked"
+        ]
+      },
+      "outcome": "Blocked / Handled Safely",
+      "result": {
+        "query": "Run search_incidents with severity='P1', status='OPEN', and exact service string \"payments-api' OR 1=1--\". Report the exact security response from the server without bypassing it.",
+        "final_response": "The server returned the following security response:\n\n**SecurityValidationError:** Invalid characters in 'service' parameter. Only alphanumeric characters, hyphens, and underscores are allowed.",
+        "tool_calls": 1,
+        "turns": 1,
+        "error_count": 1,
+        "autonomous_recovery": false,
+        "discovery_ms": 3.59,
+        "llm_ms": 2462.64,
+        "mcp_ms": 2.93,
+        "total_ms": 2469.16,
+        "mcp_overhead_pct": 0.12,
+        "input_tokens": 1727,
+        "output_tokens": 72,
+        "total_tokens": 1799,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "search_incidents",
+            "args": {
+              "status": "OPEN",
+              "service": "payments-api' OR 1=1--",
+              "severity": "P1"
+            },
+            "ipc_ms": 2.93,
+            "is_error": true,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "search_incidents",
+                "arguments": {
+                  "status": "OPEN",
+                  "service": "payments-api' OR 1=1--",
+                  "severity": "P1"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": true,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Error executing tool search_incidents: SecurityValidationError: Invalid characters in 'service' parameter. Only alphanumeric characters, hyphens, and underscores are allowed."
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-11",
+        "category": "Security & Faults",
+        "description": "Policy violation: Escalate RESOLVED INC-107",
+        "prompt": "Attempt to escalate incident INC-107 to Tier-2 with reason 'Routine SLA audit escalation test'. Report clearly whether the server allowed or blocked the mutation.",
+        "expect_keywords": [
+          "RESOLVED",
+          "cannot",
+          "blocked",
+          "violation",
+          "not"
+        ]
+      },
+      "outcome": "Blocked / Handled Safely",
+      "result": {
+        "query": "Attempt to escalate incident INC-107 to Tier-2 with reason 'Routine SLA audit escalation test'. Report clearly whether the server allowed or blocked the mutation.",
+        "final_response": "I attempted to escalate incident **INC-107** to Tier-2 with the reason `'Routine SLA audit escalation test'`.\n\n**Result:** The server **blocked** the mutation. \n\n**Reason:** According to operational guardrails (Operational Guardrail #1: *\"Never escalate an incident whose status is already RESOLVED\"*), the tool execution resulted in a `PolicyViolationError`: *Cannot escalate incident 'INC-107' because its status is already RESOLVED.*",
+        "tool_calls": 2,
+        "turns": 2,
+        "error_count": 1,
+        "autonomous_recovery": false,
+        "discovery_ms": 4.05,
+        "llm_ms": 6693.25,
+        "mcp_ms": 11.81,
+        "total_ms": 6709.11,
+        "mcp_overhead_pct": 0.18,
+        "input_tokens": 2904,
+        "output_tokens": 166,
+        "total_tokens": 3070,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "get_incident_details",
+            "args": {
+              "incident_id": "INC-107"
+            },
+            "ipc_ms": 8.34,
+            "is_error": false,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "get_incident_details",
+                "arguments": {
+                  "incident_id": "INC-107"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": false,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\n  \"incident\": {\n    \"id\": \"INC-107\",\n    \"title\": \"Duplicate invoice PDF rendering\",\n    \"service\": \"payments-api\",\n    \"severity\": \"P3\",\n    \"status\": \"RESOLVED\",\n    \"created_at\": \"2026-11-17T14:20:00Z\",\n    \"elapsed_minutes\": 180,\n    \"assigned_team\": \"Payments-SRE\",\n    \"description\": \"Idempotency key race condition patched in hotfix v4.12.2.\"\n  },\n  \"audit_history\": []\n}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "turn": 2,
+            "tool": "escalate_incident",
+            "args": {
+              "reason": "Routine SLA audit escalation test",
+              "incident_id": "INC-107",
+              "target_tier": "Tier-2"
+            },
+            "ipc_ms": 3.47,
+            "is_error": true,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "method": "tools/call",
+              "params": {
+                "name": "escalate_incident",
+                "arguments": {
+                  "reason": "Routine SLA audit escalation test",
+                  "incident_id": "INC-107",
+                  "target_tier": "Tier-2"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 2,
+              "result": {
+                "isError": true,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Error executing tool escalate_incident: PolicyViolationError: Cannot escalate incident 'INC-107' because its status is already RESOLVED."
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "id": "TC-12",
+        "category": "Security & Faults",
+        "description": "Simulated DB timeout (timeout-sim-svc)",
+        "prompt": "Query search_incidents for service='timeout-sim-svc' with severity='ALL' and status='OPEN'. If a timeout occurs, report the outage honestly without fabricating any incident records.",
+        "expect_keywords": [
+          "timeout",
+          "timed out",
+          "error"
+        ]
+      },
+      "outcome": "Blocked / Handled Safely",
+      "result": {
+        "query": "Query search_incidents for service='timeout-sim-svc' with severity='ALL' and status='OPEN'. If a timeout occurs, report the outage honestly without fabricating any incident records.",
+        "final_response": "The incident search for service `timeout-sim-svc` encountered an upstream database timeout error (`DatabaseTimeoutError: Upstream incident store timed out after 1200ms while querying 'timeout-sim-svc'`). No incident records were returned or fabricated.",
+        "tool_calls": 1,
+        "turns": 1,
+        "error_count": 1,
+        "autonomous_recovery": false,
+        "discovery_ms": 3.68,
+        "llm_ms": 6832.84,
+        "mcp_ms": 1203.86,
+        "total_ms": 8040.39,
+        "mcp_overhead_pct": 14.97,
+        "input_tokens": 1716,
+        "output_tokens": 87,
+        "total_tokens": 1803,
+        "traces": [
+          {
+            "turn": 1,
+            "tool": "search_incidents",
+            "args": {
+              "severity": "ALL",
+              "service": "timeout-sim-svc",
+              "status": "OPEN"
+            },
+            "ipc_ms": 1203.86,
+            "is_error": true,
+            "jsonrpc_request": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "method": "tools/call",
+              "params": {
+                "name": "search_incidents",
+                "arguments": {
+                  "severity": "ALL",
+                  "service": "timeout-sim-svc",
+                  "status": "OPEN"
+                }
+              }
+            },
+            "jsonrpc_response": {
+              "jsonrpc": "2.0",
+              "id": 1,
+              "result": {
+                "isError": true,
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Error executing tool search_incidents: DatabaseTimeoutError: Upstream incident store timed out after 1200ms while querying 'timeout-sim-svc'."
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

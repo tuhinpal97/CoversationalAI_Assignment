@@ -1,0 +1,13 @@
+test_id,category,description,tool_calls,error_count,autonomous_recovery,llm_ms,mcp_ms,total_ms,mcp_overhead_pct,input_tokens,output_tokens,total_tokens,outcome
+TC-01,Single-Tool Lookup,Search OPEN P1 incidents,1,0,False,1444.55,6.05,1451.93,0.42,1924,196,2120,Pass
+TC-02,Single-Tool Lookup,Inspect live service metrics,1,0,False,3586.88,6.14,3596.46,0.17,1790,153,1943,Pass
+TC-03,Resource-Grounded,SLA policy + incident lookup,1,0,False,2614.64,5.91,2624.03,0.23,1793,218,2011,Pass
+TC-04,Multi-Step Chain,MCP Prompt: postmortem_brief(INC-104),3,0,False,3590.61,192.96,3785.65,5.1,4728,619,5347,Partial / Review
+TC-05,Multi-Step Chain,MCP Prompt: sla_breach_audit(P1),3,0,False,3115.14,17.57,3134.82,0.56,3335,590,3925,Pass
+TC-06,Multi-Step Chain,Lookup -> Metrics -> Escalate INC-101,3,0,False,4833.81,108.68,4947.01,2.2,4423,455,4878,Pass
+TC-07,Error Recovery,Invalid severity 'CRITICAL' -> P1,5,1,True,8936.22,31.42,8971.74,0.35,7117,594,7711,Recovered Autonomously
+TC-08,Error Recovery,Unknown service -> self-correct via hint,2,1,True,1665.08,9.41,1677.98,0.56,2805,213,3018,Recovered Autonomously
+TC-09,Error Recovery,Malformed ID '104' -> INC-104,2,1,True,9179.36,8.79,9191.45,0.1,2923,85,3008,Recovered Autonomously
+TC-10,Security & Faults,SQL Injection payload in service filter,1,1,False,2462.64,2.93,2469.16,0.12,1727,72,1799,Blocked / Handled Safely
+TC-11,Security & Faults,Policy violation: Escalate RESOLVED INC-107,2,1,False,6693.25,11.81,6709.11,0.18,2904,166,3070,Blocked / Handled Safely
+TC-12,Security & Faults,Simulated DB timeout (timeout-sim-svc),1,1,False,6832.84,1203.86,8040.39,14.97,1716,87,1803,Blocked / Handled Safely

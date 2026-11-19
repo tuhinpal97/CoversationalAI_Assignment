@@ -1,0 +1,18 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "native_function_calling": {
+    "total_latency_ms": 2469.86,
+    "handshake_ms": 0.0,
+    "mcp_ipc_ms": 0.0,
+    "total_tokens": 947,
+    "reusable_across_hosts": false
+  },
+  "mcp_integration": {
+    "total_latency_ms": 2125.86,
+    "handshake_ms": 1899.96,
+    "mcp_ipc_ms": 11.3,
+    "mcp_overhead_pct": 0.53,
+    "total_tokens": 2259,
+    "reusable_across_hosts": true
+  }
+}
