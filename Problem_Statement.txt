@@ -1,0 +1,23 @@
+Experiential Learning allows professionals to blend academic theory with workplace application, involving group studies and practical projects.
+
+Key Principles of  Experiential Learning:
+
+Simulation: Addresses the limitations of real-world experience by allowing students to test scenarios and learn from virtual failures.
+Collaboration: Encourages team-based learning through group studies and projects.
+Mentorship: Involves industry professionals in the learning process.
+
+Process to Prepare the  Experiential Learning Assignment
+
+1.  Choose any one practical concept of your interest from your syllabus as per your handout. You can perform the experimentation based on this concept using any language / software tool /package etc.as per your expertise/interest.  
+
+2.. This work as an  experiential learning assignment  may be generated from   the sources such as your previous work  experiences OR  from the web search OR under the guidance of  your mentor/ friends/ colleagues   working in the domains like LLM/AI/ Gen AI  etc. 
+
+3. You are advised  to use the virtual labs ( BITS prayog shala portal ) for this experimentation. 
+
+4. Submit  the report of minimum 4 page write up in word/ pdf . There is NO  specific format / template for report. You may include flowchart, diagrams, architectures wherever required.
+
+5.  The mark allocation will be done based on the depth of knowledge presented /  your understanding about the experiment presented .
+
+6. For any further clarification you may refer the recording of CS 13  conducted on 31st  Oct, 2026 . You can also contact me on 9096063015 any time.
+
+7. Duration of Submission of Assignment :   11:35 AM,  19th November 2026 to 11;59 PM ,  29th November 2026
